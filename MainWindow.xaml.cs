@@ -23,40 +23,11 @@ namespace TestVolna {
             InitializeComponent();
         }
 
-        void test() {
-            Polyline line = new Polyline();
-            PointCollection polygonPoints = new PointCollection();
-
-            double w = canvas.ActualWidth;
-            double h = canvas.ActualHeight;
-
-            double wc = w / 2;
-            double hc = h / 2;
-
-            for (double x = 0; x <= w; x += 0.5) {
-
-                double x100 = 2 * Math.PI * x / 100;
-
-                double y = 30 * Math.Sin(x100*2) + hc;
-
-                polygonPoints.Add(new Point(x, y));
-            }
-
-            line.Stroke = new SolidColorBrush(Colors.Green);
-            line.StrokeThickness = 0.5;
-            line.Points = polygonPoints;
-
-            canvas.Children.Add(line);
-        }
 
         private void Button_Click(object sender, RoutedEventArgs e) {
             WindowState = System.Windows.WindowState.Maximized;
 
             canvas.Children.Clear();
-
-
-
-
 
             PointCollection polygonPoints = new PointCollection();
 
@@ -74,32 +45,33 @@ namespace TestVolna {
             ox.Points.Add(new Point(w, hc));
             canvas.Children.Add(ox);
 
-            int max = 100;
+            int max = 10000;
 
-            PointCollection[] points = new PointCollection[max+1];
-            for (int i = 0; i <= max; i++) {
-                points[i] = new PointCollection();
-            }
+            //PointCollection[] points = new PointCollection[max+1];
+            //for (int i = 0; i <= max; i++) {
+            //    points[i] = new PointCollection();
+            //}
 
-            for (double x = 0; x <= w; x+=0.5) {
+            var delt = Convert.ToDouble(txt_dk.Text.Replace(".", ","));
 
-                double x100 = 2 * Math.PI * x / 3;
+            for (double x = -wc; x <= wc; x+=0.5) {
+
+                double x100 = 2 * Math.PI * x*10;
 
                 //var ff = Math.Sin(x);
 
                 double ysum = 0;
 
-                for(int i = 0; i <= max; i++) {
+                for (int i = 0; i <= max; i++) {
                     var prc = (double)i / max;
-                    var delt = Convert.ToDouble(txt_dk.Text.Replace(".", ","));
                     var y = Math.Sin(x100 * (1 + delt * prc));
-                    points[i].Add(new Point(x, y+hc));
+                    //points[i].Add(new Point(x, y+hc));
                     ysum += y;
                 }
 
                 var cury = ysum / max * 3 * 30 + hc;
-                Debug.WriteLine(cury);
-                polygonPoints.Add(new Point(x, cury));
+                //Debug.WriteLine(cury);
+                polygonPoints.Add(new Point(x+wc, cury));
             }
 
             //for (int i = 0; i <= max; i++) {
